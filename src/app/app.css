@@ -1,0 +1,152 @@
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 5vw;
+  height: 80px;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(15px);
+  border-bottom: 1px solid rgba(229, 189, 190, 0.3);
+}
+
+.brand {
+  color: #ba0036;
+  font-size: 1.5rem;
+  font-weight: 900;
+  text-decoration: none;
+  letter-spacing: -0.03em;
+}
+
+.nav {
+  display: flex;
+  gap: 8px;
+  background: #f6f3f2;
+  padding: 6px;
+  border-radius: 999px;
+}
+
+.nav a {
+  color: #5c3f41;
+  text-decoration: none;
+  padding: 10px 20px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+}
+
+.nav a.active {
+  background: #ffffff;
+  color: #ba0036;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.nav a:hover:not(.active) {
+  color: #ba0036;
+}
+
+.account {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.translate-btn {
+  background: #f6f3f2;
+  color: #ba0036;
+  border: 1.5px solid #ba0036;
+  padding: 8px 16px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-weight: 800;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 6px rgba(186, 0, 54, 0.1);
+}
+
+.translate-btn:hover {
+  background: #ba0036;
+  color: #ffffff;
+  transform: scale(1.05) translateY(-1px);
+  box-shadow: 0 6px 12px rgba(186, 0, 54, 0.2);
+}
+
+.translate-btn .material-symbols-outlined {
+  font-size: 1.2rem;
+}
+
+.account a {
+  color: #1b1c1c;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+button,
+.button-link {
+  border: 0;
+  border-radius: 12px;
+  background: #ba0036;
+  color: white !important;
+  cursor: pointer;
+  font: inherit;
+  padding: 12px 24px;
+  text-decoration: none;
+  font-weight: 800;
+  transition: all 0.2s ease;
+}
+
+button:hover,
+.button-link:hover {
+  background: #a0002e;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(186, 0, 54, 0.2);
+}
+
+@media (max-width: 900px) {
+  .topbar { 
+    height: auto; 
+    padding: 12px 20px;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .nav { 
+    order: 3;
+    width: 100%;
+    justify-content: center;
+    overflow-x: auto;
+    background: transparent;
+    padding: 0;
+  }
+  .nav a {
+    padding: 8px 14px;
+    font-size: 0.8rem;
+    white-space: nowrap;
+  }
+  .brand { font-size: 1.2rem; }
+  .account { gap: 8px; }
+  button, .button-link { padding: 8px 16px; font-size: 0.85rem; }
+}
+
+main {
+  min-height: calc(100vh - 65px);
+}
+
+@media (max-width: 780px) {
+  .topbar {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .nav,
+  .account {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+}
