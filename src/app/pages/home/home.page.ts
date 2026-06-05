@@ -5,6 +5,7 @@ import { RouterLink } from '@angular/router';
 import { PropertyService } from '../../core/property.service';
 import { Property } from '../../core/models';
 import { LanguageService } from '../../core/language.service';
+import { AuthService } from '../../core/auth.service'; // Added for admin status checks
 
 type FilterMap = Partial<Record<'city' | 'country' | 'guests' | 'property_type' | 'min_price' | 'ordering', string>>;
 
@@ -15,23 +16,25 @@ interface LandingCategory {
   filters: FilterMap;
 }
 
-interface InspirationStay {
-  title: string;
-  location: string;
-  image: string;
-  rating: string;
-  price: number;
-  caption: string;
-  filters: FilterMap;
-}
-
 @Component({
   selector: 'app-home-page',
   imports: [CommonModule, CurrencyPipe, ReactiveFormsModule, RouterLink],
   template: `
+    <!-- ADMIN ALERT BAR: Appears only if logged user is an administrator/staff member -->
+    @if (authService.currentUser()?.is_staff || authService.currentUser()?.is_superuser) {
+      <div class="admin-control-strip">
+        <div class="admin-strip-content">
+          <span class="material-symbols-outlined">shield_person</span>
+          <p><strong>Admin Dashboard Active:</strong> Signed in as {{ authService.currentUser()?.username }}. You have full control over stays and properties.</p>
+        </div>
+        <a routerLink="/admin" class="admin-action-btn">Manage System</a>
+      </div>
+    }
+
     <header class="stay-hero">
       <div class="stay-hero-media">
-        <img src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=1800&q=85" alt="Modern villa with pool at sunset" />
+        <!-- Relaxed optimized developer layout image links -->
+        <img src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=1600&q=80" alt="Modern luxury villa with infinity pool at sunset" />
       </div>
       <div class="stay-hero-content">
         <h1>{{ language.t('findNextStay') }} <span class="highlight">{{ language.t('unforgettable') }}</span></h1>
@@ -101,7 +104,7 @@ interface InspirationStay {
             <a class="stay-card" [routerLink]="['/properties', property.id]">
               <div class="stay-photo-container">
                 <div class="stay-photo">
-                  @if (property.images.length) {
+                  @if (property.images && property.images.length) {
                     <img [src]="property.images[0].image" [alt]="property.title" loading="lazy" />
                   } @else {
                     <img [src]="fallbackImage(property, i)" [alt]="property.title" loading="lazy" />
@@ -141,7 +144,11 @@ interface InspirationStay {
         </div>
       </section>
 
+      <!-- Fixed: Modified to standard inline image handling to circumvent CSS Background CORS blocking -->
       <section class="feature-banner" aria-label="Stay of the week">
+        <div class="banner-image-bg">
+          <img src="https://images.unsplash.com/photo-1508849789987-4e5333c12b78?auto=format&fit=crop&w=1200&q=80" alt="Highland Castle Background" />
+        </div>
         <div class="banner-content">
           <span class="tag">{{ language.t('stayOfWeek') }}</span>
           <h2>Highland Heritage Castle</h2>
@@ -161,11 +168,11 @@ interface InspirationStay {
         </div>
         <div class="invitation-visual">
           <div class="image-wrapper">
-            <img src="https://images.unsplash.com/photo-1556911220-bff31c812dba?auto=format&fit=crop&w=1200&q=85" alt="Hosts preparing a welcoming kitchen" />
+            <img src="https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=800&q=80" alt="Hosts preparing a welcoming kitchen" />
             <div class="testimonial-card">
               <span class="quote">"</span>
               <p>{{ language.t('hostingChangedLife') }}</p>
-              <strong>Oceanne and Lauren , Superhosts</strong>
+              <strong>Oceanne and Lauren, Superhosts</strong>
             </div>
           </div>
         </div>
@@ -182,6 +189,42 @@ interface InspirationStay {
       --white: #ffffff;
       --shadow: 0 12px 32px rgba(27, 28, 28, 0.08);
       --radius: 20px;
+    }
+
+    /* Clean Admin Header Banner Styles */
+    .admin-control-strip {
+      background: #111827;
+      color: #f3f4f6;
+      padding: 12px 5vw;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      font-size: 0.9rem;
+    }
+
+    .admin-strip-content {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .admin-strip-content .material-symbols-outlined {
+      color: #fbbf24;
+    }
+
+    .admin-action-btn {
+      background: #fbbf24;
+      color: #111827 !important;
+      padding: 6px 16px;
+      border-radius: 8px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+
+    .admin-action-btn:hover {
+      opacity: 0.9;
     }
 
     .stay-hero {
@@ -318,7 +361,7 @@ interface InspirationStay {
 
     .category-bar {
       position: sticky;
-      top: 65px;
+      top: 0;
       z-index: 100;
       background: rgba(252, 249, 248, 0.95);
       backdrop-filter: blur(10px);
@@ -523,13 +566,31 @@ interface InspirationStay {
       margin: 80px 0;
       height: 500px;
       border-radius: 32px;
-      background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1520637836862-4d197d17c93a?auto=format&fit=crop&w=1600&q=85') center/cover;
       display: flex;
       align-items: center;
       padding: 0 80px;
       color: var(--white);
       position: relative;
       overflow: hidden;
+    }
+
+    .banner-image-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+
+    .banner-image-bg img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .banner-image-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.45);
     }
 
     .banner-content {
@@ -750,6 +811,7 @@ export class HomePage {
   private readonly fb = inject(FormBuilder);
   private readonly propertiesApi = inject(PropertyService);
   protected readonly language = inject(LanguageService);
+  protected readonly authService = inject(AuthService); // Injected Authentication
 
   protected readonly properties = signal<Property[]>([]);
   protected readonly loading = signal(false);
@@ -780,15 +842,13 @@ export class HomePage {
     ordering: ['']
   });
 
+  // Updated: High-quality curated premium photography array for real-estate fallbacks
   private readonly fallbackImages = [
-    'https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&w=900&q=85',
-    'https://images.unsplash.com/photo-1518732714860-b62714ce0c59?auto=format&fit=crop&w=900&q=85',
-    'https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?auto=format&fit=crop&w=900&q=85',
-    'https://images.unsplash.com/photo-1518780664697-55e3ad937233?auto=format&fit=crop&w=900&q=85',
-    'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=900&q=85',
-    'https://images.unsplash.com/photo-1600607688969-a5bfcd646154?auto=format&fit=crop&w=900&q=85',
-    'https://images.unsplash.com/photo-1598228723793-52759bba239c?auto=format&fit=crop&w=900&q=85',
-    'https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=900&q=85'
+    'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=900&q=80', // Apartment
+    'https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=900&q=80', // House
+    'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=900&q=80', // Villa
+    'https://images.unsplash.com/photo-1510798831971-661eb04b3739?auto=format&fit=crop&w=900&q=80', // Cabin
+    'https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&w=900&q=80'  // Room
   ];
 
   constructor() {
@@ -800,7 +860,10 @@ export class HomePage {
     this.error.set('');
     this.propertiesApi.list(this.filters.getRawValue()).subscribe({
       next: (page) => this.properties.set(page.results),
-      error: () => this.error.set('Could not load properties. Check that the Django server is running on port 8000.'),
+      error: (err) => {
+        console.error(err);
+        this.error.set('Could not load properties. Make sure the database connectivity is active.');
+      },
       complete: () => this.loading.set(false)
     });
   }
@@ -822,18 +885,16 @@ export class HomePage {
   }
 
   toggleFavorite(id: number): void {
-    // Logic for favoriting would go here
     console.log('Toggled favorite for property:', id);
   }
 
   fallbackImage(property: Property, index: number): string {
     const typeMap: Record<string, string> = {
-      apartment: this.fallbackImages[7],
-      house: this.fallbackImages[4],
-      villa: this.fallbackImages[0],
-      cabin: this.fallbackImages[1],
-      room: this.fallbackImages[5],
-      hotel: this.fallbackImages[6]
+      apartment: this.fallbackImages[0],
+      house: this.fallbackImages[1],
+      villa: this.fallbackImages[2],
+      cabin: this.fallbackImages[3],
+      room: this.fallbackImages[4]
     };
     return typeMap[property.property_type] ?? this.fallbackImages[index % this.fallbackImages.length];
   }

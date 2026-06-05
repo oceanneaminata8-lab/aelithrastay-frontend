@@ -16,6 +16,8 @@ export interface User {
   avatar?: string;
   bio?: string;
   is_suspended: boolean;
+  is_staff?: boolean;
+  is_superuser?: boolean;
 }
 
 export interface Amenity {
