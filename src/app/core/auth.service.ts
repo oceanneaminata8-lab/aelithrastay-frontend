@@ -20,11 +20,13 @@ export class AuthService {
   constructor(private http: HttpClient) {}
 
   register(payload: Partial<User> & { password: string }): Observable<User> {
-    return this.http.post<User>(`${API_BASE_URL}/auth/register/`, payload);
+    // Added /api/ to match your Django URL patterns precisely
+    return this.http.post<User>(`${API_BASE_URL}/api/auth/register/`, payload);
   }
 
   login(username: string, password: string): Observable<TokenResponse> {
-    return this.http.post<TokenResponse>(`${API_BASE_URL}/auth/login/`, { username, password }).pipe(
+    // Added /api/ to match your Django URL patterns precisely
+    return this.http.post<TokenResponse>(`${API_BASE_URL}/api/auth/login/`, { username, password }).pipe(
       tap((tokens) => {
         localStorage.setItem('access_token', tokens.access);
         localStorage.setItem('refresh_token', tokens.refresh);
@@ -34,13 +36,15 @@ export class AuthService {
 
   refreshAccessToken(): Observable<RefreshResponse> {
     const refresh = localStorage.getItem('refresh_token');
-    return this.http.post<RefreshResponse>(`${API_BASE_URL}/auth/refresh/`, { refresh }).pipe(
+    // Added /api/ to match your Django URL patterns precisely
+    return this.http.post<RefreshResponse>(`${API_BASE_URL}/api/auth/refresh/`, { refresh }).pipe(
       tap((tokens) => localStorage.setItem('access_token', tokens.access))
     );
   }
 
   loadMe(): Observable<User> {
-    return this.http.get<User>(`${API_BASE_URL}/auth/me/`).pipe(
+    // Added /api/ to match your Django URL patterns precisely
+    return this.http.get<User>(`${API_BASE_URL}/api/auth/me/`).pipe(
       tap((user) => {
         this.currentUser.set(user);
         localStorage.setItem('current_user', JSON.stringify(user));
