@@ -70,7 +70,7 @@ import { LanguageService } from '../../core/language.service';
             <span class="material-symbols-outlined">support_agent</span>
             <h3>{{ language.t('stillNeedHelp') }}</h3>
             <p>{{ language.t('supportDesc') }}</p>
-            <a href="mailto:support@aelithrastay.com" class="btn-primary">{{ language.t('contactSupport') }}</a>
+            <a href="mailto:oceanneaminata8@gmail.com,ysireoceanneaminata@gmail.com,obibogo@icloud.com" class="btn-primary">{{ language.t('contactSupport') }}</a>
           </div>
         </section>
       </div>
