@@ -18,6 +18,7 @@ export interface User {
   is_suspended: boolean;
   is_staff?: boolean;
   is_superuser?: boolean;
+  properties_count?: number;
 }
 
 export interface Amenity {

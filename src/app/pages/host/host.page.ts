@@ -137,7 +137,9 @@ import { LanguageService } from '../../core/language.service';
               <article class="property-studio-card">
                 <div class="card-visual">
                   <img [src]="fallbackImage(item, i)" [alt]="item.title" />
-                  <div class="status-indicator">Active</div>
+                  <div class="status-indicator" [class]="item.approval_status">
+                    {{ item.approval_status }}
+                  </div>
                 </div>
                 <div class="card-info">
                   <h4>{{ item.title }}</h4>
@@ -477,14 +479,19 @@ import { LanguageService } from '../../core/language.service';
       position: absolute;
       top: 8px;
       left: 8px;
-      background: rgba(255, 255, 255, 0.9);
-      padding: 3px 8px;
+      background: rgba(255, 255, 255, 0.95);
+      padding: 3px 10px;
       border-radius: 99px;
       font-size: 0.65rem;
       font-weight: 800;
       color: #008558;
       text-transform: uppercase;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
+
+    .status-indicator.pending { color: #f59e0b; }
+    .status-indicator.rejected { color: #dc2626; }
+    .status-indicator.approved { color: #008558; }
 
     .card-info {
       padding: 16px;

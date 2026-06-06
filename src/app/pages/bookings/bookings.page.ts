@@ -85,7 +85,7 @@ import { LanguageService } from '../../core/language.service';
           <h3>{{ language.t('cantFindReservation') }}</h3>
           <p>{{ language.t('cantFindReservationDesc') }}</p>
         </div>
-        <a routerLink="/profile" class="btn-outline-white">{{ language.t('visitHelpCenter') }}</a>
+        <a routerLink="/help-center" class="btn-outline-white">{{ language.t('visitHelpCenter') }}</a>
       </section>
 
       @if (notice()) {

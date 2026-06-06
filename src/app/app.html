@@ -5,6 +5,7 @@
     <a routerLink="/host" routerLinkActive="active">{{ language.t('host') }}</a>
     <a routerLink="/bookings" routerLinkActive="active">{{ language.t('bookings') }}</a>
     <a routerLink="/wishlist" routerLinkActive="active">{{ language.t('wishlist') }}</a>
+    <a routerLink="/about-dev" routerLinkActive="active">{{ language.t('aboutUser') }}</a>
     @if (auth.currentUser()?.role === 'admin') {
       <a routerLink="/admin" routerLinkActive="active">{{ language.t('admin') }}</a>
     }

@@ -13,6 +13,9 @@ import { PropertyDetailPage } from './pages/property-detail/property-detail.page
 import { RegisterPage } from './pages/register/register.page';
 import { WishlistPage } from './pages/wishlist/wishlist.page';
 
+import { HelpCenterPage } from './pages/help-center/help-center.page';
+import { AboutDevPage } from './pages/about-dev/about';
+
 export const routes: Routes = [
   { path: '', component: HomePage },
   { path: 'properties/:id', component: PropertyDetailPage },
@@ -25,5 +28,7 @@ export const routes: Routes = [
   { path: 'booking-confirmation/:id', component: BookingConfirmationPage, canActivate: [authGuard] },
   { path: 'wishlist', component: WishlistPage, canActivate: [authGuard] },
   { path: 'profile', component: ProfilePage, canActivate: [authGuard] },
+  { path: 'help-center', component: HelpCenterPage },
+  { path: 'about-dev', component: AboutDevPage },
   { path: '**', redirectTo: '' }
 ];

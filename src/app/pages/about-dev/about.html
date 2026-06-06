@@ -1,0 +1,130 @@
+<section class="about-dev-page">
+  <header class="dev-hero">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <div class="profile-frame">
+        <img src="/me.jpg" alt="Océanne Aminata Maimuna" class="dev-avatar" />
+      </div>
+      <span class="eyebrow">{{ language.t('devProfile') }}</span>
+      <h1> Océanne Aminata M.</h1>
+      <p class="tagline">Full-Stack Developer & Computer Security Enthusiast</p>
+    </div>
+  </header>
+
+  <div class="dev-container">
+    <section class="bio-section">
+      <div class="bio-card">
+        <span class="material-symbols-outlined dev-icon">architecture</span>
+        <h2>{{ language.t('devMission') }}</h2>
+        <p><strong>{{ language.t('devMissionText') }}</strong></p>
+        <p>{{ language.t('devBelief') }}</p>
+      </div>
+
+      <div class="motivation-grid">
+        <div class="motivation-card">
+          <h3>{{ language.t('whyAelithra') }}</h3>
+          <p>{{ language.t('devLabText') }}</p>
+          <ul class="motivation-list">
+            <li><strong>{{ language.t('fullStackConv') }}:</strong> {{ language.t('fullStackConvDesc') }}</li>
+            <li><strong>{{ language.t('defensiveEng') }}:</strong> {{ language.t('defensiveEngDesc') }}</li>
+            <li><strong>{{ language.t('uxFluidity') }}:</strong> {{ language.t('uxFluidityDesc') }}</li>
+            <li><strong>{{ language.t('globalReady') }}:</strong> {{ language.t('globalReadyDesc') }}</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <div class="tech-matrix">
+      <!-- Frontend Pairing -->
+      <article class="matrix-card">
+        <div class="card-header">
+          <span class="material-symbols-outlined">responsive_layout</span>
+          <h3>{{ language.t('frontendEngine') }}</h3>
+        </div>
+        <div class="pairings">
+          <div class="pair">
+            <span class="tech-label">Angular</span>
+            <div class="progress-bar"><div class="fill" style="width: 95%"></div></div>
+          </div>
+          <div class="pair">
+            <span class="tech-label">Vanilla CSS</span>
+            <div class="progress-bar"><div class="fill" style="width: 90%"></div></div>
+          </div>
+        </div>
+        <p class="pair-desc">{{ language.t('fullStackConvDesc') }}</p>
+      </article>
+
+      <!-- Backend Pairing -->
+      <article class="matrix-card">
+        <div class="card-header">
+          <span class="material-symbols-outlined">terminal</span>
+          <h3>{{ language.t('backendCore') }}</h3>
+        </div>
+        <div class="pairings">
+          <div class="pair">
+            <span class="tech-label">Django REST</span>
+            <div class="progress-bar"><div class="fill" style="width: 92%"></div></div>
+          </div>
+          <div class="pair">
+            <span class="tech-label">Python</span>
+            <div class="progress-bar"><div class="fill" style="width: 88%"></div></div>
+          </div>
+        </div>
+        <p class="pair-desc">{{ language.t('defensiveEngDesc') }}</p>
+      </article>
+
+      <!-- Database Pairing -->
+      <article class="matrix-card">
+        <div class="card-header">
+          <span class="material-symbols-outlined">database</span>
+          <h3>{{ language.t('dataMgmt') }}</h3>
+        </div>
+        <div class="pairings">
+          <div class="pair">
+            <span class="tech-label">PostgreSQL</span>
+            <div class="progress-bar"><div class="fill" style="width: 85%"></div></div>
+          </div>
+          <div class="pair">
+            <span class="tech-label">SQLite</span>
+            <div class="progress-bar"><div class="fill" style="width: 95%"></div></div>
+          </div>
+        </div>
+        <p class="pair-desc">{{ language.t('uxFluidityDesc') }}</p>
+      </article>
+
+      <!-- Security Pairing -->
+      <article class="matrix-card highlight">
+        <div class="card-header">
+          <span class="material-symbols-outlined">security</span>
+          <h3>{{ language.t('securityAudit') }}</h3>
+        </div>
+        <div class="pairings">
+          <div class="pair">
+            <span class="tech-label">Nmap</span>
+            <div class="progress-bar"><div class="fill security" style="width: 80%"></div></div>
+          </div>
+          <div class="pair">
+            <span class="tech-label">Linux CLI</span>
+            <div class="progress-bar"><div class="fill security" style="width: 90%"></div></div>
+          </div>
+        </div>
+        <p class="pair-desc">{{ language.t('globalReadyDesc') }}</p>
+      </article>
+    </div>
+
+    <footer class="dev-footer">
+      <div class="contact-strip">
+        <a href="mailto:maimuna@example.com" class="contact-item">
+          <span class="material-symbols-outlined">mail</span>
+          {{ language.t('contactDev') }}
+        </a>
+        <div class="separator"></div>
+        <div class="contact-item">
+          <span class="material-symbols-outlined">shield</span>
+          {{ language.t('securityMindset') }}
+        </div>
+      </div>
+      <a routerLink="/" class="back-link">{{ language.t('backToApp') }}</a>
+    </footer>
+  </div>
+</section>

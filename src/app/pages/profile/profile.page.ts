@@ -62,6 +62,12 @@ import { LanguageService } from '../../core/language.service';
                 <span class="label">{{ language.t('about') }}</span>
                 <p>{{ user.bio || language.t('noBioYet') }}</p>
               </div>
+              @if (user.role === 'host' || user.role === 'admin') {
+                <div class="info-group">
+                  <span class="label">{{ language.t('hostedProperties') }}</span>
+                  <p>{{ user.properties_count || 0 }}</p>
+                </div>
+              }
             </div>
 
             @if (message()) {
