@@ -55,30 +55,52 @@
 }
 
 .translate-btn {
-  background: #f6f3f2;
-  color: #ba0036;
-  border: 1.5px solid #ba0036;
-  padding: 8px 16px;
+  background: #ba0036;
+  color: #ffffff;
+  border: 0;
+  padding: 10px 20px;
   border-radius: 999px;
   cursor: pointer;
   font-weight: 800;
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   display: flex;
   align-items: center;
   gap: 8px;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 4px 6px rgba(186, 0, 54, 0.1);
+  box-shadow: 0 4px 12px rgba(186, 0, 54, 0.25);
 }
 
 .translate-btn:hover {
-  background: #ba0036;
-  color: #ffffff;
-  transform: scale(1.05) translateY(-1px);
-  box-shadow: 0 6px 12px rgba(186, 0, 54, 0.2);
+  background: #a0002e;
+  transform: scale(1.05) translateY(-2px);
+  box-shadow: 0 8px 16px rgba(186, 0, 54, 0.35);
 }
 
 .translate-btn .material-symbols-outlined {
-  font-size: 1.2rem;
+  font-size: 1.3rem;
+}
+
+.translate-label {
+  font-size: 0.8rem;
+  opacity: 0.9;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.lang-code {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+}
+
+@media (max-width: 600px) {
+  .translate-label {
+    display: none;
+  }
+  .translate-btn {
+    padding: 8px 12px;
+  }
 }
 
 .account a {

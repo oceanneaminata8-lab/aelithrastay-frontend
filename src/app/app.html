@@ -12,7 +12,8 @@
   <div class="account">
     <button type="button" class="translate-btn" [title]="language.t('translateHint')" (click)="language.toggle()">
       <span class="material-symbols-outlined">language</span>
-      <span>{{ language.current() === 'en' ? 'FR' : 'EN' }}</span>
+      <span class="translate-label">{{ language.t('translate') }}:</span>
+      <span class="lang-code">{{ language.current() === 'en' ? 'FR' : 'EN' }}</span>
     </button>
     @if (auth.currentUser()) {
       <a routerLink="/profile">{{ auth.currentUser()?.username }}</a>

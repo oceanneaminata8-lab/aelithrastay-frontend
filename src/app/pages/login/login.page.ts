@@ -57,10 +57,19 @@ import { LanguageService } from '../../core/language.service';
           </div>
 
           <form [formGroup]="form" (ngSubmit)="submit()">
-          <label>{{ language.t('username') }}<input formControlName="username" [placeholder]="language.t('username')" /></label>
+          <label>
+            {{ language.t('username') }}
+            <input formControlName="username" [placeholder]="language.t('username')" [class.invalid]="isInvalid('username')" />
+            @if (isInvalid('username')) {
+              <small class="error-text">Username is required.</small>
+            }
+          </label>
           <label>
             <span class="label-row">{{ language.t('password') }} <a href="#">{{ language.t('forgotPassword') }}</a></span>
-            <input formControlName="password" type="password" [placeholder]="language.t('password')" />
+            <input formControlName="password" type="password" [placeholder]="language.t('password')" [class.invalid]="isInvalid('password')" />
+            @if (isInvalid('password')) {
+              <small class="error-text">Password is required.</small>
+            }
           </label>
           <label class="check-row">
             <input type="checkbox" />
@@ -69,7 +78,7 @@ import { LanguageService } from '../../core/language.service';
           @if (error()) {
             <p class="notice">{{ error() }}</p>
           }
-          <button type="submit" [disabled]="form.invalid || loading()">{{ loading() ? language.t('signingIn') : language.t('logIn') }}</button>
+          <button type="submit" [disabled]="loading()">{{ loading() ? language.t('signingIn') : language.t('logIn') }}</button>
           </form>
 
           <div class="divider"><span>{{ language.t('orContinueWith') }}</span></div>
@@ -104,7 +113,30 @@ import { LanguageService } from '../../core/language.service';
     @if (notice()) {
       <p class="toast">{{ notice() }}</p>
     }
-  `
+  `,
+  styles: [`
+    .error-text {
+      color: #ba0036;
+      font-size: 0.75rem;
+      font-weight: 600;
+      margin-top: -4px;
+      display: block;
+    }
+    input.invalid {
+      border-color: #ba0036 !important;
+      background-color: #fff8f8;
+    }
+    .notice {
+      background-color: #fff5f5;
+      color: #ba0036;
+      border: 1px solid #ffcfcf;
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 16px;
+      font-weight: 500;
+      font-size: 0.9rem;
+    }
+  `]
 })
 export class LoginPage {
   private readonly fb = inject(FormBuilder);
@@ -120,13 +152,23 @@ export class LoginPage {
     password: ['', Validators.required]
   });
 
+  isInvalid(controlName: string): boolean {
+    const control = this.form.get(controlName);
+    return !!(control && control.invalid && (control.dirty || control.touched));
+  }
+
   submit(): void {
-    if (this.form.invalid) return;
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      this.error.set('Please fill in all required fields.');
+      return;
+    }
     this.loading.set(true);
     this.error.set('');
     const { username, password } = this.form.getRawValue();
     this.auth.login(username, password).subscribe({
       next: () => {
+        this.notice.set('Login successful! Redirecting...');
         this.auth.loadMe().subscribe({
           next: () => this.router.navigateByUrl('/'),
           error: () => this.router.navigateByUrl('/')

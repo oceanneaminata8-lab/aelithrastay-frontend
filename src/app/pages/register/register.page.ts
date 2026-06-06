@@ -57,15 +57,37 @@ import { LanguageService } from '../../core/language.service';
         <form [formGroup]="form" (ngSubmit)="submit()">
           <label>
             {{ language.t('username') }}
-            <input formControlName="username" placeholder="john_doe" />
-            <small class="field-hint">{{ language.t('usernameHint') }}</small>
+            <input formControlName="username" placeholder="john_doe" [class.invalid]="isInvalid('username')" />
+            @if (isInvalid('username')) {
+              <small class="error-text">
+                {{ form.get('username')?.hasError('required') ? 'Username is required.' : 'Invalid username format.' }}
+              </small>
+            } @else {
+              <small class="field-hint">{{ language.t('usernameHint') }}</small>
+            }
           </label>
-          <label>{{ language.t('email') }}<input formControlName="email" type="email" placeholder="name@example.com" /></label>
+          <label>
+            {{ language.t('email') }}
+            <input formControlName="email" type="email" placeholder="name@example.com" [class.invalid]="isInvalid('email')" />
+            @if (isInvalid('email')) {
+              <small class="error-text">
+                {{ form.get('email')?.hasError('required') ? 'Email is required.' : 'Invalid email address.' }}
+              </small>
+            }
+          </label>
           <div class="form-grid">
             <label>{{ language.t('firstName') }}<input formControlName="first_name" placeholder="John" /></label>
             <label>{{ language.t('lastName') }}<input formControlName="last_name" placeholder="Doe" /></label>
           </div>
-          <label>{{ language.t('password') }}<input formControlName="password" type="password" placeholder="********" /></label>
+          <label>
+            {{ language.t('password') }}
+            <input formControlName="password" type="password" placeholder="********" [class.invalid]="isInvalid('password')" />
+            @if (isInvalid('password')) {
+              <small class="error-text">
+                {{ form.get('password')?.hasError('required') ? 'Password is required.' : 'Password must be at least 8 characters long.' }}
+              </small>
+            }
+          </label>
           <label class="host-toggle">
             <span>
               <strong>{{ language.t('hostToggleLabel') }}</strong>
@@ -80,7 +102,7 @@ import { LanguageService } from '../../core/language.service';
           @if (error()) {
             <p class="notice">{{ error() }}</p>
           }
-          <button type="submit" [disabled]="form.invalid || loading()">{{ loading() ? language.t('creating') : language.t('signUp') }}</button>
+          <button type="submit" [disabled]="loading()">{{ loading() ? language.t('creating') : language.t('signUp') }}</button>
         </form>
 
         <div class="divider"><span>or</span></div>
@@ -114,7 +136,30 @@ import { LanguageService } from '../../core/language.service';
     @if (notice()) {
       <p class="toast">{{ notice() }}</p>
     }
-  `
+  `,
+  styles: [`
+    .error-text {
+      color: #ba0036;
+      font-size: 0.75rem;
+      font-weight: 600;
+      margin-top: -4px;
+      display: block;
+    }
+    input.invalid {
+      border-color: #ba0036 !important;
+      background-color: #fff8f8;
+    }
+    .notice {
+      background-color: #fff5f5;
+      color: #ba0036;
+      border: 1px solid #ffcfcf;
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 16px;
+      font-weight: 500;
+      font-size: 0.9rem;
+    }
+  `]
 })
 export class RegisterPage {
   private readonly fb = inject(FormBuilder);
@@ -134,8 +179,17 @@ export class RegisterPage {
     password: ['', [Validators.required, Validators.minLength(8)]]
   });
 
+  isInvalid(controlName: string): boolean {
+    const control = this.form.get(controlName);
+    return !!(control && control.invalid && (control.dirty || control.touched));
+  }
+
   submit(): void {
-    if (this.form.invalid) return;
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      this.error.set('Please correct the highlighted errors before signing up.');
+      return;
+    }
     this.loading.set(true);
     this.error.set('');
     const payload = this.form.getRawValue();
@@ -146,7 +200,10 @@ export class RegisterPage {
       first_name: payload.first_name.trim(),
       last_name: payload.last_name.trim()
     }).subscribe({
-      next: () => this.router.navigateByUrl('/login'),
+      next: () => {
+        this.notice.set('Registration successful! Redirecting to login...');
+        setTimeout(() => this.router.navigateByUrl('/login'), 1500);
+      },
       error: (error: HttpErrorResponse) => {
         this.error.set(this.formatError(error));
         this.loading.set(false);
