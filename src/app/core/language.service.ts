@@ -140,6 +140,8 @@ const TRANSLATIONS: TranslationMap = {
     addedWishlist: 'Added to your wishlist!',
     alreadyWishlist: 'Already in your wishlist.',
     linkCopied: 'Link copied to clipboard!',
+    copyLink: 'Copy Link',
+    shareVia: 'Share via',
     thankYouReview: 'Thank you for your review!',
     alreadyReviewed: 'You have already reviewed this property.',
     loginToReserve: 'Please login to reserve this stay.',

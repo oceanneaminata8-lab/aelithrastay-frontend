@@ -297,7 +297,50 @@
   .tech-matrix {
     grid-template-columns: 1fr;
   }
+  .dev-hero {
+    height: 340px;
+  }
   .hero-content h1 {
-    font-size: 3rem;
+    font-size: 2.8rem;
+  }
+  .hero-content .tagline {
+    font-size: 1.2rem;
+  }
+  .dev-container {
+    margin-top: -30px;
+  }
+  .bio-card {
+    padding: 32px 24px;
+  }
+  .motivation-card {
+    padding: 32px 24px;
+  }
+}
+
+@media (max-width: 640px) {
+  .contact-strip {
+    flex-direction: column;
+    padding: 24px;
+    border-radius: 24px;
+    width: 100%;
+    gap: 16px;
+  }
+  .separator {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-content h1 {
+    font-size: 2.2rem;
+  }
+  .hero-content .tagline {
+    font-size: 1.1rem;
+  }
+  .bio-card h2 {
+    font-size: 1.5rem;
+  }
+  .bio-card p {
+    font-size: 1rem;
   }
 }

@@ -121,9 +121,23 @@ import { LanguageService } from '../../core/language.service';
     .btn-outline:hover { background: #f6f3f2; border-color: #f6f3f2; }
 
     @media (max-width: 768px) {
-      .help-article { flex-direction: column; padding: 32px; }
+      .help-center { padding: 48px 20px; }
+      .help-article { flex-direction: column; padding: 32px; gap: 24px; }
+      .article-icon { flex: 0 0 56px; height: 56px; }
       h1 { font-size: 2.5rem; }
       .contact-card { padding: 40px 24px; }
+      .article-text h2 { font-size: 1.6rem; }
+      .faq-section h2 { font-size: 1.8rem; }
+    }
+
+    @media (max-width: 480px) {
+      h1 { font-size: 2rem; }
+      .help-header p { font-size: 1.1rem; }
+      .article-text h2 { font-size: 1.4rem; }
+      .article-text p { font-size: 1rem; }
+      .contact-card h3 { font-size: 1.6rem; }
+      .contact-card p { font-size: 1rem; }
+      .btn-primary { width: 100%; text-align: center; }
     }
   `]
 })

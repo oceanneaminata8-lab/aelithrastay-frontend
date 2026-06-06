@@ -1464,11 +1464,13 @@ button.stay-card {
 
   .hero {
     min-height: 520px;
+    padding: 48px 24px;
   }
 
   .section-head {
     align-items: start;
     flex-direction: column;
+    gap: 8px;
   }
 
   .stay-search,
@@ -1480,16 +1482,24 @@ button.stay-card {
 
   .stay-search {
     border-radius: 24px;
+    padding: 16px;
+    gap: 12px;
   }
 
   .stay-search label {
     border-right: 0;
     border-bottom: 1px solid #e5bdbe;
+    padding: 12px;
+  }
+
+  .stay-search label:last-of-type {
+    border-bottom: 0;
   }
 
   .stay-search button {
     width: 100%;
     border-radius: 14px;
+    height: 56px;
   }
 
   .category-bar {
@@ -1497,8 +1507,7 @@ button.stay-card {
   }
 
   .feature-stay {
-    margin-left: 24px;
-    margin-right: 24px;
+    margin: 24px 16px 48px;
   }
 
   .feature-stay > div {
@@ -1506,7 +1515,8 @@ button.stay-card {
   }
 
   .auth-card {
-    padding: 28px;
+    padding: 32px 24px;
+    border-radius: 24px;
   }
 
   .register-card {
@@ -1518,13 +1528,12 @@ button.stay-card {
   .register-card .divider,
   .register-card .social-grid,
   .register-card .auth-switch {
-    margin-left: 24px;
-    margin-right: 24px;
+    margin-left: 20px;
+    margin-right: 20px;
   }
 
   .register-head {
-    padding-left: 0;
-    padding-right: 0;
+    padding: 24px 20px;
   }
 
   .social-grid {
@@ -1548,5 +1557,43 @@ button.stay-card {
   .admin-sidebar {
     position: static;
     height: auto;
+    border-right: 0;
+    border-bottom: 1px solid #e5bdbe;
+  }
+
+  .confirm-property {
+    padding: 24px;
+    gap: 24px;
+  }
+
+  .confirm-summary {
+    padding: 24px;
+    gap: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  h1 {
+    font-size: 2.2rem;
+  }
+
+  .page-section {
+    padding: 32px 16px;
+  }
+
+  .auth-shell {
+    padding: 24px 16px;
+  }
+
+  .auth-card h1 {
+    font-size: 1.75rem;
+  }
+
+  .trip-copy {
+    padding: 16px;
+  }
+
+  .admin-main {
+    padding: 24px 16px;
   }
 }

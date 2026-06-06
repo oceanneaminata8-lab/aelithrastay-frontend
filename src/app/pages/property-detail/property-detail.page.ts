@@ -353,6 +353,47 @@ import { LanguageService } from '../../core/language.service';
         {{ message() }}
       </div>
     }
+
+    @if (showShareModal()) {
+      <div class="modal-backdrop" (click)="showShareModal.set(false)">
+        <div class="share-modal" (click)="$event.stopPropagation()">
+          <header class="modal-header">
+            <h3>{{ language.t('share') }}</h3>
+            <button class="close-btn" (click)="showShareModal.set(false)">
+              <span class="material-symbols-outlined">close</span>
+            </button>
+          </header>
+          
+          <p class="share-subtitle">{{ language.t('shareVia') }}</p>
+          
+          <div class="share-grid">
+            <a [href]="whatsappShareUrl()" target="_blank" class="share-option">
+              <span class="material-symbols-outlined" style="color: #25D366">chat</span>
+              <span>WhatsApp</span>
+            </a>
+            <a [href]="facebookShareUrl()" target="_blank" class="share-option">
+              <span class="material-symbols-outlined" style="color: #1877F2">groups</span>
+              <span>Facebook</span>
+            </a>
+            <a [href]="twitterShareUrl()" target="_blank" class="share-option">
+              <span class="material-symbols-outlined" style="color: #000">campaign</span>
+              <span>X (Twitter)</span>
+            </a>
+            <a [href]="emailShareUrl()" class="share-option">
+              <span class="material-symbols-outlined" style="color: var(--primary)">mail</span>
+              <span>Email</span>
+            </a>
+          </div>
+
+          <div class="copy-section">
+            <input type="text" [value]="currentUrl()" readonly />
+            <button (click)="copyLink()" class="btn-copy">
+              {{ language.t('copyLink') }}
+            </button>
+          </div>
+        </div>
+      </div>
+    }
   `,
   styles: [`
     :host {
@@ -560,11 +601,59 @@ import { LanguageService } from '../../core/language.service';
     .toast-notification { position: fixed; bottom: 32px; left: 50%; transform: translateX(-50%) translateY(100px); background: #1b1c1c; color: var(--white); padding: 16px 24px; border-radius: 16px; display: flex; align-items: center; gap: 12px; font-weight: 700; transition: transform 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28); z-index: 2000; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
     .toast-notification.show { transform: translateX(-50%) translateY(0); }
 
+    .modal-backdrop {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5); backdrop-filter: blur(4px);
+      display: grid; place-items: center; z-index: 3000;
+    }
+
+    .share-modal {
+      background: #fff; width: 90%; max-width: 480px; border-radius: 24px;
+      padding: 32px; box-shadow: 0 24px 64px rgba(0,0,0,0.2);
+    }
+
+    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+    .modal-header h3 { font-size: 1.5rem; font-weight: 800; margin: 0; }
+    .close-btn { background: transparent; border: 0; cursor: pointer; color: #888; }
+
+    .share-subtitle { color: var(--text-muted); font-weight: 700; margin-bottom: 16px; }
+
+    .share-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 32px; }
+    .share-option {
+      display: flex; align-items: center; gap: 12px; padding: 16px;
+      border: 1px solid #eee; border-radius: 16px; text-decoration: none;
+      color: var(--text-main); font-weight: 700; transition: background 0.2s;
+    }
+    .share-option:hover { background: #f8f8f8; }
+    .share-option .material-symbols-outlined { font-size: 24px; }
+
+    .copy-section { display: flex; gap: 12px; background: #f8f8f8; padding: 8px; border-radius: 12px; border: 1px solid #eee; }
+    .copy-section input { flex: 1; border: 0; background: transparent; padding: 8px; font-size: 0.9rem; color: #666; width: 100px; }
+    .btn-copy { background: #1b1c1c; color: #fff; border: 0; padding: 8px 16px; border-radius: 8px; font-weight: 700; cursor: pointer; }
+
     @media (max-width: 968px) {
-      .content-layout { grid-template-columns: 1fr; gap: 48px; }
+      .property-detail-container { padding: 16px 16px 80px; }
+      .content-layout { grid-template-columns: 1fr; gap: 40px; }
       .sidebar-content { order: -1; }
-      .gallery-grid { height: 300px; }
+      .booking-card { position: static; width: 100%; }
+      .gallery-grid { grid-template-columns: 1fr; height: auto; }
+      .side-images { display: grid; grid-template-columns: repeat(2, 1fr); margin-top: 10px; }
+      .main-image { aspect-ratio: 4/3; }
       .detail-header h1 { font-size: 1.8rem; }
+      .amenity-grid { grid-template-columns: 1fr; }
+      .price-breakdown { padding-top: 20px; border-top: 1px solid #eee; margin-top: 20px; }
+    }
+
+    @media (max-width: 480px) {
+      .header-top { flex-direction: column; align-items: flex-start; gap: 16px; }
+      .header-actions { width: 100%; justify-content: space-between; }
+      .detail-header h1 { font-size: 1.6rem; }
+      .host-info h2 { font-size: 1.2rem; }
+      .highlights { gap: 16px; }
+      .share-modal { padding: 24px 20px; width: 95%; }
+      .share-grid { grid-template-columns: 1fr; gap: 12px; }
+      .copy-section { flex-direction: column; }
+      .copy-section input { width: 100%; }
     }
   `]
 })
@@ -587,6 +676,7 @@ export class PropertyDetailPage {
   protected readonly isSubmittingBooking = signal(false);
   protected readonly isAddingWishlist = signal(false);
   protected readonly showPaymentOptions = signal(false);
+  protected readonly showShareModal = signal(false);
   protected readonly selectedPaymentMethod = signal('card');
   protected readonly paymentConfirmed = signal(false);
   protected readonly language = inject(LanguageService);
@@ -750,8 +840,54 @@ export class PropertyDetailPage {
     });
   }
 
+  protected readonly currentUrl = () => window.location.href;
+
+  protected whatsappShareUrl(): string {
+    const text = encodeURIComponent(`${this.language.t('discoverUnique')}: ${this.property()?.title} - ${this.currentUrl()}`);
+    return `https://wa.me/?text=${text}`;
+  }
+
+  protected facebookShareUrl(): string {
+    return `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(this.currentUrl())}`;
+  }
+
+  protected twitterShareUrl(): string {
+    const text = encodeURIComponent(`${this.language.t('discoverUnique')}: ${this.property()?.title}`);
+    return `https://twitter.com/intent/tweet?text=${text}&url=${encodeURIComponent(this.currentUrl())}`;
+  }
+
+  protected emailShareUrl(): string {
+    const subject = encodeURIComponent(this.property()?.title || 'AelithraStay');
+    const body = encodeURIComponent(`${this.language.t('discoverUnique')}: ${this.currentUrl()}`);
+    return `mailto:?subject=${subject}&body=${body}`;
+  }
+
+  protected copyLink(): void {
+    navigator.clipboard.writeText(this.currentUrl()).then(() => {
+      this.flash(this.language.t('linkCopied'));
+      this.showShareModal.set(false);
+    });
+  }
+
   share(): void {
-    this.flash(this.language.t('linkCopied'));
+    const stay = this.property();
+    if (!stay) return;
+
+    const shareData = {
+      title: stay.title,
+      text: `${this.language.t('discoverUnique')}: ${stay.title}`,
+      url: this.currentUrl()
+    };
+
+    if (navigator.share) {
+      navigator.share(shareData).catch((err) => {
+        if (err.name !== 'AbortError') {
+          this.showShareModal.set(true);
+        }
+      });
+    } else {
+      this.showShareModal.set(true);
+    }
   }
 
   fallbackImage(index: number): string {

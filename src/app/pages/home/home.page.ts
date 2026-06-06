@@ -765,17 +765,24 @@ interface LandingCategory {
     @media (max-width: 1024px) {
       .host-invitation {
         grid-template-columns: 1fr;
-        padding: 40px;
+        padding: 40px 24px;
         gap: 40px;
       }
       .testimonial-card {
+        position: relative;
         left: 0;
-        bottom: 10px;
+        bottom: 0;
+        margin-top: -20px;
+        max-width: 100%;
+      }
+      .image-wrapper {
+        transform: none;
       }
       .stay-search {
         flex-direction: column;
         border-radius: 24px;
         padding: 16px;
+        width: calc(100% - 32px);
       }
       .search-input-group {
         flex-direction: column;
@@ -785,25 +792,42 @@ interface LandingCategory {
       .stay-search label {
         border-right: 0;
         border-bottom: 1px solid #eee;
+        width: 100%;
       }
       .search-btn {
         width: 100%;
         margin-top: 16px;
         justify-content: center;
+        height: 56px;
       }
       .feature-banner {
         height: auto;
-        padding: 60px 40px;
+        padding: 60px 24px;
+        margin: 40px 16px;
+        flex-direction: column;
+        align-items: flex-start;
       }
       .banner-content h2 { font-size: 2.5rem; }
     }
 
     @media (max-width: 768px) {
-      .stay-hero { height: auto; min-height: 500px; }
-      .stay-hero-content h1 { font-size: 2.8rem; }
-      .stay-grid { grid-template-columns: 1fr; }
+      .stay-hero { height: auto; min-height: 540px; padding: 60px 20px; }
+      .stay-hero-content h1 { font-size: 3rem; }
+      .stay-hero-content p { margin-bottom: 32px; }
+      .stay-grid { grid-template-columns: 1fr; gap: 24px; }
       .invitation-text h2 { font-size: 2.2rem; }
-      .category-strip { gap: 20px; }
+      .category-strip { gap: 20px; padding: 0 24px; }
+      .section-head h2 { font-size: 1.8rem; }
+    }
+
+    @media (max-width: 480px) {
+      .stay-hero-content h1 { font-size: 2.4rem; }
+      .stay-hero-content p { font-size: 1rem; }
+      .banner-content h2 { font-size: 2rem; }
+      .banner-content p { font-size: 0.95rem; }
+      .invitation-text h2 { font-size: 1.8rem; }
+      .invitation-text p { font-size: 1rem; }
+      .testimonial-card p { font-size: 0.9rem; }
     }
   `]
 })
