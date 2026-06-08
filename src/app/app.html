@@ -1,6 +1,7 @@
 <header class="topbar">
-  <a class="brand" routerLink="/">AelithraStay</a>
-  <nav class="nav">
+  <a class="brand" routerLink="/" (click)="closeMobileMenu()">AelithraStay</a>
+
+  <nav class="nav desktop-nav" aria-label="Primary navigation">
     <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">{{ language.t('explore') }}</a>
     <a routerLink="/host" routerLinkActive="active">{{ language.t('host') }}</a>
     <a routerLink="/bookings" routerLinkActive="active">{{ language.t('bookings') }}</a>
@@ -10,7 +11,8 @@
       <a routerLink="/admin" routerLinkActive="active">{{ language.t('admin') }}</a>
     }
   </nav>
-  <div class="account">
+
+  <div class="account desktop-account">
     <button type="button" class="translate-btn" [title]="language.t('translateHint')" (click)="language.toggle()">
       <span class="material-symbols-outlined">language</span>
       <span class="translate-label">{{ language.t('translate') }}:</span>
@@ -24,7 +26,100 @@
       <a class="button-link" routerLink="/register">{{ language.t('register') }}</a>
     }
   </div>
+
+  <button
+    type="button"
+    class="mobile-menu-button"
+    aria-label="Open navigation menu"
+    aria-controls="mobile-navigation"
+    [attr.aria-expanded]="mobileMenuOpen"
+    (click)="toggleMobileMenu()"
+  >
+    <span class="material-symbols-outlined">{{ mobileMenuOpen ? 'close' : 'menu' }}</span>
+  </button>
 </header>
+
+<button
+  type="button"
+  class="mobile-backdrop"
+  aria-label="Close navigation menu"
+  [class.visible]="mobileMenuOpen"
+  [attr.tabindex]="mobileMenuOpen ? 0 : -1"
+  (click)="closeMobileMenu()"
+></button>
+
+<aside
+  id="mobile-navigation"
+  class="mobile-sidebar"
+  [class.open]="mobileMenuOpen"
+  [attr.aria-hidden]="!mobileMenuOpen"
+>
+  <div class="mobile-sidebar-head">
+    <div>
+      <span class="mobile-kicker">{{ language.t('exploreStays') }}</span>
+      <strong>AelithraStay</strong>
+    </div>
+    <button type="button" class="sidebar-close" aria-label="Close navigation menu" (click)="closeMobileMenu()">
+      <span class="material-symbols-outlined">close</span>
+    </button>
+  </div>
+
+  <nav class="mobile-nav" aria-label="Mobile navigation">
+    <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="closeMobileMenu()">
+      <span class="material-symbols-outlined">explore</span>
+      {{ language.t('explore') }}
+    </a>
+    <a routerLink="/host" routerLinkActive="active" (click)="closeMobileMenu()">
+      <span class="material-symbols-outlined">add_home</span>
+      {{ language.t('host') }}
+    </a>
+    <a routerLink="/bookings" routerLinkActive="active" (click)="closeMobileMenu()">
+      <span class="material-symbols-outlined">luggage</span>
+      {{ language.t('bookings') }}
+    </a>
+    <a routerLink="/wishlist" routerLinkActive="active" (click)="closeMobileMenu()">
+      <span class="material-symbols-outlined">favorite</span>
+      {{ language.t('wishlist') }}
+    </a>
+    <a routerLink="/about-dev" routerLinkActive="active" (click)="closeMobileMenu()">
+      <span class="material-symbols-outlined">code</span>
+      {{ language.t('aboutUser') }}
+    </a>
+    @if (auth.currentUser()?.role === 'admin') {
+      <a routerLink="/admin" routerLinkActive="active" (click)="closeMobileMenu()">
+        <span class="material-symbols-outlined">admin_panel_settings</span>
+        {{ language.t('admin') }}
+      </a>
+    }
+  </nav>
+
+  <div class="mobile-sidebar-footer">
+    <button type="button" class="mobile-language" (click)="language.toggle()">
+      <span class="material-symbols-outlined">language</span>
+      <span>{{ language.t('translate') }}</span>
+      <strong>{{ language.current() === 'en' ? 'FR' : 'EN' }}</strong>
+    </button>
+
+    @if (auth.currentUser()) {
+      <a class="mobile-profile" routerLink="/profile" (click)="closeMobileMenu()">
+        <span class="profile-avatar">{{ auth.currentUser()?.username?.charAt(0)?.toUpperCase() }}</span>
+        <span>
+          <small>{{ language.t('account') }}</small>
+          <strong>{{ auth.currentUser()?.username }}</strong>
+        </span>
+      </a>
+      <button type="button" class="mobile-logout" (click)="logout()">
+        <span class="material-symbols-outlined">logout</span>
+        {{ language.t('logout') }}
+      </button>
+    } @else {
+      <div class="mobile-auth-actions">
+        <a routerLink="/login" (click)="closeMobileMenu()">{{ language.t('login') }}</a>
+        <a class="mobile-register" routerLink="/register" (click)="closeMobileMenu()">{{ language.t('register') }}</a>
+      </div>
+    }
+  </div>
+</aside>
 
 <main>
   <router-outlet />
