@@ -183,6 +183,15 @@ main {
     padding: 0;
   }
 
+  .mobile-menu-button {
+    order: -1;
+    margin-right: -6px;
+  }
+
+  .brand {
+    margin-right: auto;
+  }
+
   .mobile-menu-button:hover,
   .sidebar-close:hover {
     background: #eee8e6;
