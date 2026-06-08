@@ -10,7 +10,7 @@ const TRANSLATIONS: TranslationMap = {
   en: {
     explore: 'Explore',
     host: 'Host',
-    bookings: 'Bookings',
+    bookings: 'My Bookings',
     wishlist: 'Wishlist',
     admin: 'Admin',
     login: 'Login',
@@ -307,8 +307,8 @@ const TRANSLATIONS: TranslationMap = {
   fr: {
     explore: 'Explorer',
     host: 'Héberger',
-    bookings: 'Réservations',
-    wishlist: 'Favoris',
+    bookings: 'Mes réservations',
+    wishlist: ' Favoris',
     admin: 'Admin',
     login: 'Connexion',
     register: 'Inscription',
